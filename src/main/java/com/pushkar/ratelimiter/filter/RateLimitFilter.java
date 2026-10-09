@@ -23,8 +23,7 @@ public class RateLimitFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain)
-            throws IOException, ServletException {
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
@@ -34,6 +33,7 @@ public class RateLimitFilter implements Filter {
             chain.doFilter(servletRequest, servletResponse);
         else {
             response.setStatus(429);
+            response.setHeader("Retry-After", "1");
             response.getWriter().write("Rate limit exceeded. Try again later");
         }
     }
